@@ -1,0 +1,78 @@
+Product Manager -> for Bussinemens
+
+Authentification:
+  login->email.com
+  parol->string
+
+
+Product Manager (models):
+    User
+    Store
+    Seller
+    Product-Type
+    Product
+    SelledProduct
+    Admin
+
+User model :
+    id : number
+    Fullname : string
+    email : string
+    password : string
+    phone : string
+    created_at : Datetime
+    strores : Strore[]
+    sellers : Seller[]
+    product-types : Product-Type[]
+
+
+Store model :
+    id : number
+    Name : string
+    Place : string
+    sellers : Seller[]
+    created_at : Datetime
+
+
+
+    
+Seller model :
+    id : number
+    Fullname : string
+    email : string
+    password : string
+    phone : string
+    created_at : Datetime
+    selled-products : SelledProduct[]
+
+
+
+Product-Type model :
+    id : number
+    name : string 
+    products : Product[]
+
+
+
+Product model :
+    id : number 
+    name : string
+    price : number
+    count : number
+    produc-type : Product-Type
+
+
+
+SelledProduct model :
+    id : number
+    name : string
+    count : number
+    selled-price : number
+    selled-by : Seller
+
+
+
+Admin model :
+    id : number
+    Fullname : string 
+    users : User[]
