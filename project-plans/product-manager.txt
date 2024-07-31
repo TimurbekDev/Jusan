@@ -44,6 +44,7 @@ Seller model :
     phone : string
     created_at : Datetime
     selled-products : SelledProduct[]
+    role : string
 
 
 
@@ -74,5 +75,11 @@ SelledProduct model :
 
 Admin model :
     id : number
+    Fullname : string
+    email : string
+    password : string
+    phone : string
+    created_at : Datetime
     Fullname : string 
     users : User[]
+    role : string

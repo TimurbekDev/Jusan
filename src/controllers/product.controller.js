@@ -1,3 +1,4 @@
+import { ProductType } from "../models/product-type.js";
 import { Product } from "../models/product.js";
 import { check } from "../utils/db.js";
 
@@ -14,17 +15,48 @@ const getAllProducts = async (_, res) => {
 const addProduct = async (req, res) => {
 
     const product = new Product(req.body)
+    const product_type_id = product.product_type
 
-    try {
-        await product.save();
-        res.status(200).send({
-            message: 'ok',
-            data: [product]
-        })
+    if (check(product_type_id)) {
+
+        const foundedPt = await ProductType.findById(product_type_id)
+
+        if (!foundedPt) {
+            res.status(404).send({
+                message: 'Product-Type not found'
+            })
+            return;
+        }
+
+        try {
+
+            await ProductType.findByIdAndUpdate(product_type_id,
+                {
+                    $push: {
+                        products: product
+                    }
+                },
+                { upsert: false, new: true }
+            )
+
+            await product.save()
+            res.status(200).send({
+                message: 'Ok',
+                data: [product]
+            })
+
+        }
+        catch (error) {
+            res.status(500).send({
+                message: `${error.message}`
+            })
+        }
+        return ;
     }
-    catch (error) {
-        res.status(500).send(error);
-    }
+
+    res.status(404).send({
+        message : "Product-Type doesn't match"
+    })
 }
 
 const getProductById = async (req, res) => {
@@ -39,21 +71,21 @@ const getProductById = async (req, res) => {
                 message: 'Product not found',
                 data: []
             })
-            return ;
+            return;
         }
 
         res.status(200).send({
             message: 'ok',
             data: [foundedProduct]
         })
-        return ;
+        return;
     }
 
     res.status(404).send({
         message: 'Product not found',
         data: []
     })
-    return ;
+    return;
 }
 
 const deleteProductById = async (req, res) => {
@@ -64,10 +96,12 @@ const deleteProductById = async (req, res) => {
         const deletedProduct = await Product.findByIdAndDelete(productId)
 
         if (!deletedProduct) {
+
             res.status(404).send({
                 message: 'Product not found',
                 data: []
-            })
+            }) 
+
             return ;
         }
 
@@ -84,26 +118,26 @@ const deleteProductById = async (req, res) => {
         data: []
     })
 
-    return ;
+    return;
 }
 
 const updateProductById = async (req, res) => {
 
     const productId = req.params.productId
 
-    if(check(productId)){
+    if (check(productId)) {
 
         const updatedProduct = await Product.findByIdAndUpdate(productId,
             req.body,
             { overwriteDiscriminatorKey: true, new: true }
         )
-    
+
         if (!updatedProduct) {
             res.status(404).send({
                 message: 'Product not found',
                 data: []
             })
-            return ;
+            return;
         }
 
         res.status(200).send({
@@ -111,7 +145,7 @@ const updateProductById = async (req, res) => {
             data: [updatedProduct]
         })
 
-        return ;
+        return;
     }
 
     res.status(404).send({
@@ -123,4 +157,4 @@ const updateProductById = async (req, res) => {
 }
 
 
-export { getAllProducts, addProduct, getProductById, deleteProductById, updateProductById }
+export { getAllProducts, addProduct, getProductById, deleteProductById , updateProductById }
