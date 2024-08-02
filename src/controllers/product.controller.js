@@ -1,4 +1,4 @@
-import { ProductType } from "../models/product-type.js";
+import { Category } from "../models/category.js";
 import { Product } from "../models/product.js";
 import { check } from "../utils/db.js";
 
@@ -15,22 +15,22 @@ const getAllProducts = async (_, res) => {
 const addProduct = async (req, res) => {
 
     const product = new Product(req.body)
-    const product_type_id = product.product_type
+    const categoryId = product.category_id
 
-    if (check(product_type_id)) {
+    if (check(categoryId)) {
 
-        const foundedPt = await ProductType.findById(product_type_id)
+        const foundedCategory = await Category.findById(categoryId)
 
-        if (!foundedPt) {
+        if (!foundedCategory) {
             res.status(404).send({
-                message: 'Product-Type not found'
+                message: 'Category not found'
             })
             return;
         }
 
         try {
 
-            await ProductType.findByIdAndUpdate(product_type_id,
+            await Category.findByIdAndUpdate(categoryId,
                 {
                     $push: {
                         products: product
@@ -55,7 +55,7 @@ const addProduct = async (req, res) => {
     }
 
     res.status(404).send({
-        message : "Product-Type doesn't match"
+        message : "Category doesn't match"
     })
 }
 

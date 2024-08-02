@@ -13,9 +13,9 @@ export const ProductSchema = new Schema({
         type : Number,
         required : true
     },
-    product_type : {
+    category_id : {
         type : Schema.Types.ObjectId,
-        ref : 'Product-Type'
+        ref : 'Category'
     }
 })
 

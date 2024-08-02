@@ -21,7 +21,7 @@ User model :
     password : string
     phone : string
     created_at : Datetime
-    strores : Strore[]
+    stores : Store[]
     sellers : Seller[]
     product-types : Product-Type[]
 
@@ -80,6 +80,5 @@ Admin model :
     password : string
     phone : string
     created_at : Datetime
-    Fullname : string 
     users : User[]
     role : string
