@@ -3,7 +3,7 @@ const showLogin = (req,res)=>{
 }
 
 const logIn = (req,res)=>{
-    const {email,password } = req.body
+    res.render('pages/seller.ejs')
 }
 
 export {logIn,showLogin}

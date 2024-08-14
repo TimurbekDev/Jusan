@@ -1,10 +1,12 @@
 import mongoose from "mongoose";
 import { DB_URI } from "../config/app.config.js";
+import { saveRoles } from "../models/role.js";
 
 export const connectDb = () => {
 
     try {
         mongoose.connect(DB_URI)
+        saveRoles()
     }
     catch (error) {
         console.error(error.message)
