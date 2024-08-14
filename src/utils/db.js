@@ -25,5 +25,5 @@ export const connectDb = () => {
 }
 
 export const check = (id) => {
-    return mongoose.isObjectIdOrHexString(id)
+    return mongoose.isValidObjectId(id)
 }
