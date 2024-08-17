@@ -17,10 +17,12 @@ const UserSchema = new mongoose.Schema({
         type: Date,
         default: Date.now()
     },
-    role: {
+    role_id: {
         type: Schema.Types.ObjectId,
-        required: true
-    }
+        ref : 'Role',
+        strictPopulate: false,
+        required: true,
+    },
 })
 
 export const User = mongoose.model('User', UserSchema)

@@ -1,134 +1,101 @@
+import { isValidObjectId } from "mongoose";
 import { Category } from "../models/category.js";
-import { check } from "../utils/db.js";
+import { CustomException } from "../utils/customException.js";
 
+class CategoryController {
+    constructor() { }
 
-const getAllCategories = async (req, res) => {
+    //This method create new Category and returuns created category
+    async createCategory(req, res, next) {
 
-    const categories = await Category.find().populate('products')
+        try {
+            const category = new Category(req.body)
+            await category.save()
 
-    res.status(200).send({
-        message: 'Ok',
-        data: categories
-    })
-}
-
-const getCategoryById = async (req,res)=>{
-
-    const categoryId = req.params.categoryId
-
-    if(check(categoryId)){
-
-        const category = await Category.findById(categoryId).populate('products')
-
-        if(!category){
-
-            res.status(404).send({
-                message : 'Category not found',
-                data : []
+            res.status(201).send({
+                message: 'Ok', 
+                data: [category]
             })
-
-            return ;
         }
-
-        res.status(200).send({
-            message : 'Ok',
-            data : [category]
-        })
-
-        return ;
+        catch (error) {
+            next(error)
+        }
     }
-    
-    res.status(404).send({
-        message : 'doesnt match id'
-    })
-}
 
-const addCategory = async (req, res) => {
+    //This method returns all categories with products
+    async getAllCategories(_, res, next) {
 
-    const category = new Category(req.body)
+        try {
+            const categories = await Category.find().populate('products')
 
-    try {
-        await category.save()
-        res.status(200).send({
-            message: 'Ok',
-            data: [category]
-        })
-    }
-    catch (error) {
-        res.status(500).send({
-            message: `${error.message}`
-        })
-    }
-}
-
-
-const updatedCategoryById = async (req,res)=>{
-
-    const categoryId = req.params.categoryId
-
-    if(check(categoryId)){
-
-        const updatedCategory = await Category.findByIdAndUpdate(categoryId,
-            req.body,
-            { overwriteDiscriminatorKey: true, new: true }
-        )
-
-        if (!updatedCategory) {
-
-            res.status(404).send({
-                message: 'Category not found',
-                data: []
+            res.status(200).send({
+                message: 'Ok',
+                count: categories.length,
+                data: categories
             })
-
-            return ;
         }
-
-        res.status(200).send({
-            message: 'ok',
-            data: [updatedCategory]
-        })
-
-        return ;
+        catch (error) {
+            next(error)
+        }
     }
 
-    res.status(404).send({
-        message : 'Category not found',
-        data : []
-    })
-}
+    //This method return one category with products by id
+    async getCategoryById(req, res, next) {
 
-const deletedCategoryById = async(req,res)=>{
-    
-    const categoryId = req.params.categoryId
+        try{
+            const category = await Category.findById(req.params.categoryId)
 
-    if(check(categoryId)){
+            if(!category) throw new CustomException(404,'Category not found')
 
-        const deletedCategory = await Category.findByIdAndDelete(categoryId)
-
-        if(!deletedCategory){
-
-            res.status(404).send({
-                message: 'Category not found',
-                data: []
+            res.status(200).send({
+                message : 'Ok',
+                data : [category]
             })
-
-            return ;
         }
-
-        res.status(200).send({
-            message: 'ok',
-            data: [deletedCategory]
-        })
-
-        return ;
+        catch(error){
+            next(error)
+        }
     }
 
-    res.status(404).send({
-        message: 'Category not found',
-        data: []
-    })
+    //This method update category by id and returns updated category
+    async updatedCategoryById(req, res, next) {
 
-    return ;
+        try{
+            const updatedCategory = await Category.findByIdAndUpdate(
+                    req.params.categoryId,
+                    req.body,
+                    { overwriteDiscriminatorKey: true, 
+                        new: true ,
+                        runValidators : true})
+                .populate('products')
+
+            if(!updatedCategory) throw new CustomException(404,'Category not found')
+
+            res.status(200).send({
+                message : 'Ok',
+                data : [updatedCategory]
+            })
+        }
+        catch(error){
+            next(error)
+        }
+    }
+
+    //This method delete category by Id and returns deleted category
+    async deletedCategoryById(req, res, next) {
+
+        try{
+             const deletedCategory = await Category.findByIdAndDelete(re.params.categoryId)
+
+             res.status(200).send({
+                message : 'Ok',
+                data : deletedCategory
+             })
+        }
+        catch(error){
+            next(error)
+        }
+    }
 }
 
-export { getAllCategories, addCategory ,getCategoryById , updatedCategoryById , deletedCategoryById}
+export default new CategoryController

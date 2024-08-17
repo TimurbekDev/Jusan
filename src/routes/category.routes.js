@@ -1,11 +1,10 @@
 import { Router } from "express";
-import { addCategory, deletedCategoryById, getAllCategories, getCategoryById, updatedCategoryById } from "../controllers/category.controller.js";
-
+import categoryController from "../controllers/category.controller.js";
 export const categoryRoutes = Router()
 
 categoryRoutes
-    .get('/',getAllCategories)
-    .get('/:categoryId',getCategoryById)
-    .post('/',addCategory)
-    .put('/:categoryId',updatedCategoryById)
-    .delete('/:categoryId',deletedCategoryById)
+    .get('/',categoryController.getAllCategories)
+    .get('/:categoryId',categoryController.getCategoryById)
+    .post('/',categoryController.createCategory)
+    .put('/:categoryId',categoryController.updatedCategoryById)
+    .delete('/:categoryId',categoryController.deletedCategoryById)

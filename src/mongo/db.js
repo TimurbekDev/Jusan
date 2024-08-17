@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
-import { DB_URI } from "../config/app.config.js";
 import { saveRoles } from "../models/role.js";
+import { dbConfig } from "../config/db.config.js";
 
 export const connectDb = () => {
 
     try {
-        mongoose.connect(DB_URI)
+        mongoose.connect(dbConfig.url)
         saveRoles()
     }
     catch (error) {
@@ -16,14 +16,10 @@ export const connectDb = () => {
     const dbConnection = mongoose.connection;
 
     dbConnection.once('open', (_) => {
-        console.log('Database connected : ', DB_URI);
+        console.log('Database connected : ', dbConfig.url);
     })
 
     dbConnection.on('error', (error) => {
         console.log('Database connection error : ', error.message);
     })
-}
-
-export const check = (id) => {
-    return mongoose.isValidObjectId(id)
 }

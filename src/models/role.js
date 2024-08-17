@@ -6,7 +6,7 @@ const roleSchema = new mongoose.Schema({
     }
 })
 
-const Role = mongoose.model('Role', roleSchema)
+export const Role = mongoose.model('Role', roleSchema)
 
 export const saveRoles = async () => {
 
