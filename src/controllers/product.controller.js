@@ -2,104 +2,117 @@ import { isValidObjectId } from "mongoose";
 import { Category } from "../models/category.js";
 import { Product } from "../models/product.js";
 import { CustomException } from "../utils/customException.js";
+import { PAGE, LIMIT, SORT } from "../constants/product.constants.js"
 
 
-class ProductController{
-    constructor(){}
+class ProductController {
+    constructor() { }
 
-    async createProduct(req,res,next){
+    async createProduct(req, res, next) {
 
-        const product = new Product(req.body)
-        const category  = isValidObjectId(product.category_id)
-            ? await Category.findById(product.category_id)
-            : (function(){throw new CustomException(300,'aaaaa')})
+        try {
+            const product = new Product(req.body)
 
-        if(category){
-            try{
-                await Category.findByIdAndUpdate(product.category_id,
-                    { $push : {products : product}}
-                )
-                await product.save()
-    
-                return res.status(200).send({
-                    message: 'Ok',
-                    data: [product]
-                })
-            }
-            catch(error){
-                next(new CustomException(500,error.message))
-            }
-        }
+            if (!isValidObjectId(product?.category_id)) throw new CustomException(400, 'Id is not valid')
 
-        (function(){throw new CustomException(300,'aaaaa')})
-    }
+            const updatedCategory = await Category.findByIdAndUpdate(product.category_id, {
+                $push: {
+                    products: product
+                }
+            })
 
-    async getAllProducts(_,res,__){
+            if (!updatedCategory) throw new CustomException(404, 'Category not found')
 
-        const products = await Product.find()
+            await product.save()
 
-        res.status(200).send({
-            message : 'Ok',
-            count : products.length,
-            data : products
-        })
-    }
-
-    async getProductById(req,res,next){
-
-        const productId = req.params?.productId
-        const product = isValidObjectId(productId)
-            ? await Product.findById(productId)
-            : next(new CustomException(400,"Doesn't match it"))
-        
-        if(product){
-
-            return res.status(200).send({
-                message : 'Ok',
-                data : [product]
+            res.status(200).send({
+                message: 'Ok',
+                data: [product]
             })
         }
-
-        next(new CustomException(404,'Product not found'))
+        catch (error) { next(error) }
     }
 
-    async updateProductById(req,res,next){
+    async getAllProducts(req, res, next) {
 
-        const productId = req.params?.productId
+        try {
+            let query = { ...req.query }
+            let page = req.query?.page || PAGE
+            let limit = req.query?.limit || LIMIT
+            let sort = req.query?.sort || SORT
 
-        const updatedProduct = isValidObjectId(productId)
-            ? await Product.findByIdAndUpdate(productId,
+            const excludedQueries = ['page', 'limit', 'sort']
+
+            excludedQueries.map(eq => delete query[eq])
+
+            query = JSON.stringify(query).replace(
+                /\b(lt|lte|gt|gte)\b/g,
+                (match) => `$${match}`
+            )
+
+            query = JSON.parse(query)
+            let products = await Product.find(query)
+                .skip(limit * (page - 1))
+                .limit(limit)
+                .sort(`${sort}`)
+
+            res.send({
+                message: 'Ok',
+                count: products.length,
+                page, limit, sort,
+                data: products
+            })
+        }
+        catch (error) { next(error) }
+    }
+
+    async getProductById(req, res, next) {
+
+        try {
+            const product = await Product.findById(req.params.productId)
+
+            if (!product) throw new CustomException(404, 'Product not found')
+
+            res.status(200).send({
+                message: 'Ok',
+                data: [product]
+            })
+        }
+        catch (error) { next(error) }
+    }
+
+    async updateProductById(req, res, next) {
+
+        try {
+            const updatedProduct = await Product.findByIdAndUpdate(
+                req.params.productId,
                 req.body,
-                {overwriteDiscriminatorKey : true , new : true})
-            : next(new CustomException(400,"Doesn't match id"))
-        
-        if(updatedProduct){
+                { overwriteDiscriminatorKey: true, new: true }
+            );
 
-            return res.status(200).send({
-                message : 'Ok',
-                data : [updatedProduct]
+            if (!updatedProduct) throw new CustomException(404, "Product not found")
+
+            res.status(200).send({
+                message: 'Ok',
+                data: updatedProduct
             })
         }
-
-        next(new CustomException(404,"Product not found"))
+        catch (error) { next(error) }
     }
 
-    async deleteProductById(req,res,next){
+    async deleteProductById(req, res, next) {
 
-        const productId = req.params?.productId
-        const product = isValidObjectId(productId)
-            ? await Product.findByIdAndDelete(productId)
-            : next(new CustomException(400,"Doesn't match id"))
+        try {
+            const deleteProduct = await Product.findByIdAndDelete(req.params.productId)
 
-        if(product){
+            if (!deleteProduct) throw new CustomException(404, "Product not found")
 
-            return res.status(200).send({
-                message : 'Ok',
-                data : [product]
+            res.status(200).send({
+                message: 'Ok',
+                data: deleteProduct
             })
         }
-
-        next(new CustomException(404,"Product not found"))
+        catch (error) { next(error) }
     }
 }
 

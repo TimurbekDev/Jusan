@@ -1,4 +1,3 @@
-import { isValidObjectId } from "mongoose"
 import { User } from "../models/user.js"
 import { CustomException } from "../utils/customException.js"
 

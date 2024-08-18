@@ -1,6 +1,7 @@
 import { isValidObjectId } from "mongoose";
 import { Category } from "../models/category.js";
 import { CustomException } from "../utils/customException.js";
+import { Product } from "../models/product.js";
 
 class CategoryController {
     constructor() { }
@@ -85,7 +86,11 @@ class CategoryController {
     async deletedCategoryById(req, res, next) {
 
         try{
-             const deletedCategory = await Category.findByIdAndDelete(re.params.categoryId)
+             const deletedCategory = await Category.findByIdAndDelete(req.params.categoryId)
+
+            await Product.deleteMany({category_id : deletedCategory._id})
+
+             if(!deletedCategory) throw new CustomException(404,'Category not found')
 
              res.status(200).send({
                 message : 'Ok',

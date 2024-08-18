@@ -19,7 +19,7 @@ class RoleController {
             switch(user.role_id?.name){
 
                 case 'seller' : roles.push(await Role.findOne({ name : 'staff' })) ; break;
-                case 'admin'  : roles.push(await Role.find({name : 'seller'})) ; break ;
+                case 'admin'  : roles.push(await Role.findOne({name : 'seller'})) ; break ;
             }
             
             res.status(200).send({
