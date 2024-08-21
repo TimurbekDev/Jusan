@@ -1,6 +1,5 @@
+import { BadRequestException } from "../exceptions/bad-request.exception.js"
 import { User } from "../models/user.js"
-import { CustomException } from "../utils/customException.js"
-
 
 class UserController {
     constructor(){}
@@ -16,7 +15,7 @@ class UserController {
             })
         }
         catch(error){
-            next(new CustomException(500,error.message))
+            next(error)
         }
     }
 
@@ -32,7 +31,7 @@ class UserController {
             })
         }
         catch(error){
-            next(new CustomException(400,error.message))
+            next(new BadRequestException(400,error.message))
         }
     }
 }

@@ -3,6 +3,7 @@ import { Category } from "../models/category.js";
 import { Product } from "../models/product.js";
 import { CustomException } from "../utils/customException.js";
 import { PAGE, LIMIT, SORT } from "../constants/product.constants.js"
+import { NotFoundException } from "../exceptions/not-found.exception.js";
 
 
 class ProductController {
@@ -13,15 +14,13 @@ class ProductController {
         try {
             const product = new Product(req.body)
 
-            if (!isValidObjectId(product?.category_id)) throw new CustomException(400, 'Id is not valid')
-
             const updatedCategory = await Category.findByIdAndUpdate(product.category_id, {
                 $push: {
                     products: product
                 }
             })
 
-            if (!updatedCategory) throw new CustomException(404, 'Category not found')
+            if (!updatedCategory) throw new NotFoundException(404, 'Category not found')
 
             await product.save()
 
@@ -72,7 +71,7 @@ class ProductController {
         try {
             const product = await Product.findById(req.params.productId)
 
-            if (!product) throw new CustomException(404, 'Product not found')
+            if (!product) throw new NotFoundException(404, 'Product not found')
 
             res.status(200).send({
                 message: 'Ok',
@@ -91,7 +90,7 @@ class ProductController {
                 { overwriteDiscriminatorKey: true, new: true }
             );
 
-            if (!updatedProduct) throw new CustomException(404, "Product not found")
+            if (!updatedProduct) throw new NotFoundException(404, "Product not found")
 
             res.status(200).send({
                 message: 'Ok',
@@ -106,7 +105,7 @@ class ProductController {
         try {
             const deleteProduct = await Product.findByIdAndDelete(req.params.productId)
 
-            if (!deleteProduct) throw new CustomException(404, "Product not found")
+            if (!deleteProduct) throw new NotFoundException(404, "Product not found")
 
             res.status(200).send({
                 message: 'Ok',

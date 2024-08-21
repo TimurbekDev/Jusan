@@ -1,7 +1,7 @@
-import { isValidObjectId } from "mongoose";
 import { Category } from "../models/category.js";
 import { CustomException } from "../utils/customException.js";
 import { Product } from "../models/product.js";
+import { NotFoundException } from "../exceptions/not-found.exception.js";
 
 class CategoryController {
     constructor() { }
@@ -14,13 +14,11 @@ class CategoryController {
             await category.save()
 
             res.status(201).send({
-                message: 'Ok', 
+                message: 'Ok',
                 data: [category]
             })
         }
-        catch (error) {
-            next(error)
-        }
+        catch (error) { next(error) }
     }
 
     //This method returns all categories with products
@@ -35,71 +33,65 @@ class CategoryController {
                 data: categories
             })
         }
-        catch (error) {
-            next(error)
-        }
+        catch (error) { next(error) }
     }
 
     //This method return one category with products by id
     async getCategoryById(req, res, next) {
 
-        try{
+        try {
             const category = await Category.findById(req.params.categoryId)
 
-            if(!category) throw new CustomException(404,'Category not found')
+            if (!category) throw new NotFoundException(404, 'Category not found')
 
             res.status(200).send({
-                message : 'Ok',
-                data : [category]
+                message: 'Ok',
+                data: [category]
             })
         }
-        catch(error){
-            next(error)
-        }
+        catch (error) { next(error) }
     }
 
     //This method update category by id and returns updated category
     async updatedCategoryById(req, res, next) {
 
-        try{
+        try {
             const updatedCategory = await Category.findByIdAndUpdate(
-                    req.params.categoryId,
-                    req.body,
-                    { overwriteDiscriminatorKey: true, 
-                        new: true ,
-                        runValidators : true})
+                req.params.categoryId,
+                req.body,
+                {
+                    overwriteDiscriminatorKey: true,
+                    new: true,
+                    runValidators: true
+                })
                 .populate('products')
 
-            if(!updatedCategory) throw new CustomException(404,'Category not found')
+            if (!updatedCategory) throw new NotFoundException(404, 'Category not found')
 
             res.status(200).send({
-                message : 'Ok',
-                data : [updatedCategory]
+                message: 'Ok',
+                data: [updatedCategory]
             })
         }
-        catch(error){
-            next(error)
-        }
+        catch (error) { next(error) }
     }
 
     //This method delete category by Id and returns deleted category
     async deletedCategoryById(req, res, next) {
 
-        try{
-             const deletedCategory = await Category.findByIdAndDelete(req.params.categoryId)
+        try {
+            const deletedCategory = await Category.findByIdAndDelete(req.params.categoryId)
 
-            await Product.deleteMany({category_id : deletedCategory._id})
+            await Product.deleteMany({ category_id: deletedCategory._id })
 
-             if(!deletedCategory) throw new CustomException(404,'Category not found')
+            if (!deletedCategory) throw new NotFoundException(404, 'Category not found')
 
-             res.status(200).send({
-                message : 'Ok',
-                data : deletedCategory
-             })
+            res.status(200).send({
+                message: 'Ok',
+                data: deletedCategory
+            })
         }
-        catch(error){
-            next(error)
-        }
+        catch (error) { next(error) }
     }
 }
 

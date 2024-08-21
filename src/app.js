@@ -1,12 +1,13 @@
+import path from 'path';
 import express from 'express'
 import bodyParser from 'body-parser';
-import path from 'path';
-import { mainRouter } from './routes/router.js';
+import cors from 'cors'
 import morgan from 'morgan';
+import { mainRouter } from './routes/router.js';
 import { appConfig } from './config/app.config.js';
 import { connectDb } from './mongo/db.js';
-import { handleCustomExceptions } from './utils/handleException.js';
-import cors from 'cors'
+import { ExceptionHandlerMiddleware } from './middlewares/error-handler.middleware.js';
+
 
 const app = express()
 
@@ -28,7 +29,7 @@ connectDb()
 app.use('/api/v1',mainRouter)
 
 //CUSTOM MIDDLEWARE TO HANDLE EXCEPTIONS
-app.use(handleCustomExceptions)
+app.use(ExceptionHandlerMiddleware)
 
 app.listen(appConfig.port , appConfig.host, () => {
     console.log('Server listening on port : ', appConfig.port);

@@ -1,7 +1,6 @@
-import { isValidObjectId } from "mongoose";
 import { Role } from "../models/role.js"
 import { User } from "../models/user.js";
-import { CustomException } from "../utils/customException.js";
+import { NotFoundException } from "../exceptions/not-found.exception.js";
 
 class RoleController {
     constructor(){}
@@ -12,7 +11,7 @@ class RoleController {
             const user  = await User.findById(req.params.userId).populate('role_id')
 
             if(!user){
-                throw new CustomException(404,'User not found')
+                throw new NotFoundException(404,'User not found')
             } 
 
             let roles = []
@@ -27,8 +26,8 @@ class RoleController {
                 data : roles
             })
         }
-        catch(err){
-            next(err)
+        catch(error){
+            next(error)
         }
     }
 }

@@ -1,5 +1,5 @@
+import { NotFoundException } from "../exceptions/not-found.exception.js";
 import { User } from "../models/user.js";
-import { CustomException } from "../utils/customException.js";
 
 class AuthController{
     constructor(){}
@@ -12,7 +12,7 @@ class AuthController{
                 password : req.body.password
             }).populate('role_id')
 
-            if(!user) throw new CustomException(404,'User not found')
+            if(!user) throw new NotFoundException(404,'User not found')
 
             res.status(200).send({
                 message : 'Ok',
