@@ -58,10 +58,11 @@ class ProductController {
 
             res.send({
                 message: 'Ok',
-                count: products.length,
+                count: await Product.find(query).sort(`${sort}`),
                 page, limit, sort,
                 data: products
             })
+
         }
         catch (error) { next(error) }
     }
