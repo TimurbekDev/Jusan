@@ -5,7 +5,7 @@ export const ValidationMiddleware = (schema) => {
 
         const { error, __ } = schema.validate(req.body)
 
-        if (error) throw new BadRequestException(400, error.message)
+        if (error) throw new BadRequestException(error.message)
 
         next()
     }

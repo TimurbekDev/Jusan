@@ -1,5 +1,4 @@
 import { Category } from "../models/category.js";
-import { CustomException } from "../utils/customException.js";
 import { Product } from "../models/product.js";
 import { NotFoundException } from "../exceptions/not-found.exception.js";
 

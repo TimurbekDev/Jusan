@@ -1,7 +1,5 @@
-import { isValidObjectId } from "mongoose";
 import { Category } from "../models/category.js";
 import { Product } from "../models/product.js";
-import { CustomException } from "../utils/customException.js";
 import { PAGE, LIMIT, SORT } from "../constants/product.constants.js"
 import { NotFoundException } from "../exceptions/not-found.exception.js";
 

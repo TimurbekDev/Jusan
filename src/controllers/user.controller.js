@@ -1,37 +1,42 @@
+import bcrypt from 'bcrypt'
 import { BadRequestException } from "../exceptions/bad-request.exception.js"
 import { User } from "../models/user.js"
 
 class UserController {
-    constructor(){}
+    constructor() { }
 
-    async getAllUsers(_,res,next){
+    async getAllUsers(_, res, next) {
 
-        try{
+        try {
             const users = await User.find().populate('role_id')
 
             res.status(200).send({
-                message : 'Ok',
-                data : users
+                message: 'Ok',
+                data: users
             })
         }
-        catch(error){
+        catch (error) {
             next(error)
         }
     }
 
-    async createUser(req,res,next){
+    async createUser(req, res, next) {
+
+        const password = await bcrypt.hash(req.body.password, 12)
+        req.body.password = password
 
         const user = new User(req.body)
-        try{
+
+        try {
             await user.save()
 
             res.status(201).send({
-                message : 'Ok',
-                data : [user]
+                message: 'Ok',
+                data: [user]
             })
         }
-        catch(error){
-            next(new BadRequestException(400,error.message))
+        catch (error) {
+            next(error)
         }
     }
 }

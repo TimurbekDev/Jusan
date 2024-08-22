@@ -1,5 +1,8 @@
+import bcrypt from 'bcrypt'
 import { NotFoundException } from "../exceptions/not-found.exception.js";
 import { User } from "../models/user.js";
+import { BadRequestException } from '../exceptions/bad-request.exception.js';
+import { generateJwtToken } from '../helpers/jwt.helper.js';
 
 class AuthController{
     constructor(){}
@@ -7,20 +10,23 @@ class AuthController{
     async login(req,res,next){
 
         try{
-            const user = await User.findOne({
-                email : req.body.email,
-                password : req.body.password
-            }).populate('role_id')
+            const user = await User.findOne({ email : req.body.email })
+                .populate('role_id')
 
             if(!user) throw new NotFoundException(404,'User not found')
+            
+            const result = await bcrypt.compare(req.body.password,user.password)
+
+            if(!result) throw new BadRequestException('Password or Email invalid')
 
             res.status(200).send({
                 message : 'Ok',
-                data : [user]
+                data : [user],
+                jwtToken : generateJwtToken()
             })
         }
         catch(error){ next(error) }
     }
 }
 
-export default new AuthController
+export default new AuthController 
