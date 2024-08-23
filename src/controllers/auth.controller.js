@@ -13,7 +13,7 @@ class AuthController{
             const user = await User.findOne({ email : req.body.email })
                 .populate('role_id')
 
-            if(!user) throw new NotFoundException(404,'User not found')
+            if(!user) throw new NotFoundException(404,'Password or Email invalid')
             
             const result = await bcrypt.compare(req.body.password,user.password)
 
