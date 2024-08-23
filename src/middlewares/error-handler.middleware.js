@@ -1,4 +1,4 @@
-export const  ExceptionHandlerMiddleware = (error,req,res,next) => {
+export const  ExceptionHandlerMiddleware = (error,_,res,__) => {
 
     if(error.isException){
 
