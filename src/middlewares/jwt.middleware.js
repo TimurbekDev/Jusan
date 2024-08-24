@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { BadRequestException } from "../exceptions/bad-request.exception.js";
 import { jwtConfig } from "../config/jwt.config.js";
 
-export const verifyJwtToken = (req, _, next) => {
+export const verifyJwtToken = (req, _, next ) => {
 
     const token = req.headers['authorization'];
 
