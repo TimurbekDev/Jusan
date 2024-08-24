@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 
-const roleSchema = new mongoose.Schema({
+const RoleSchema = new mongoose.Schema({
     name: {
         type: String,
     }
 })
 
-export const Role = mongoose.model('Role', roleSchema)
+export const Role = mongoose.model('Role', RoleSchema)
 
 export const saveRoles = async () => {
 

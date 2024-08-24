@@ -22,7 +22,10 @@ class AuthController{
             res.status(200).send({
                 message : 'Ok',
                 data : [user],
-                jwtToken : generateJwtToken()
+                jwtToken : generateJwtToken({
+                    id : user._id,
+                    role_id : user.role_id._id
+                })
             })
         }
         catch(error){ next(error) }
