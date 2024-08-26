@@ -119,15 +119,15 @@ class SelledProductController {
             if (!refProduct)
                 throw new BadRequestException('Product not found')
 
-            if ((refProduct.count + (foundedSelledProduct.count-count)) < 0)
+            if ((refProduct.count + (foundedSelledProduct.count - count)) < 0)
                 throw new BadRequestException('selledProduct count mustbe lte than product count')
 
             await this.#_productModel.findByIdAndUpdate(refProduct._id,
                 { $inc: { count: (foundedSelledProduct.count - count) } })
-            await this.#_selledProductModel.findByIdAndUpdate(selled_product_id, {
+
+            const result = await this.#_selledProductModel.findByIdAndUpdate(selled_product_id, {
                 $set: { selled_price, count }
-            })
-            const result = await this.#_selledProductModel.findById(selled_product_id)
+            }, { new: true })
 
             res.status(200).send({
                 message: 'Ok',
@@ -138,7 +138,16 @@ class SelledProductController {
         }
     }
 
-    
+    deleteById = async (req,res,next) => {
+        try {
+            
+            const selled_product_id = req.params.id
+
+            
+        } catch (error) {
+            next(error)
+        }
+    }
 }
 
 export default new SelledProductController
