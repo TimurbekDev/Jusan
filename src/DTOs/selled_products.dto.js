@@ -10,11 +10,10 @@ class SelledProductDto{
 
         return this.#_joiValidator.object({
 
-            product_id : this.#_joiValidator.string().regex(/^[0-9a-fA-F]{24}$/),
-            user_id : this.#_joiValidator.string().regex(/^[0-9a-fA-F]{24}$/),
-            selled_price : this.#_joiValidator.number(),
-            original_price : this.#_joiValidator.number(),
-            count : this.#_joiValidator.number()
+            product_id : this.#_joiValidator.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+            user_id : this.#_joiValidator.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+            selled_price : this.#_joiValidator.number().min(0).required(),
+            count : this.#_joiValidator.number().min(0).required()
         })
     }
 
@@ -22,9 +21,8 @@ class SelledProductDto{
 
         return this.#_joiValidator.object({
 
-            selled_price : this.#_joiValidator.number(),
-            original_price : this.#_joiValidator.number(),
-            count : this.#_joiValidator.number()
+            selled_price : this.#_joiValidator.number().min(0).required(),
+            count : this.#_joiValidator.number().min(0).required()
         })
     }
 }

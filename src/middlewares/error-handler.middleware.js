@@ -9,6 +9,7 @@ export const  ExceptionHandlerMiddleware = (error,_,res,__) => {
     }
 
     res.status(500).send({
-        message : 'Internal Server Error'
+        message : 'Internal Server Error',
+        ERR : error.message
     })
 }

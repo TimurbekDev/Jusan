@@ -1,13 +1,14 @@
-import { required } from "joi";
 import { model, Schema, SchemaTypes } from "mongoose";
 
 const SelledProductsSchema = new Schema({
     product_id : {
         type : SchemaTypes.ObjectId,
+        ref : 'Product',
         required : true
     },
-    user__id : {
+    user_id : {
         type : SchemaTypes.ObjectId,
+        ref : 'User',
         required : true
     },
     selled_price : {
@@ -16,10 +17,10 @@ const SelledProductsSchema = new Schema({
     },
     original_price : {
         type : Number,
-        required : true
     },
     count : {
         type : Number,
+        min: [0, 'Count must be a non-negative number'],
         required : true
     }
 },{
@@ -28,4 +29,4 @@ const SelledProductsSchema = new Schema({
 })
 
 
-export const SelledProducts = model('Selled-Products',SelledProductsSchema)
+export const SelledProduct = model('Selled-Product',SelledProductsSchema)

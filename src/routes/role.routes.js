@@ -1,7 +1,7 @@
-import { Router } from "express";
-import roleController from "../controllers/role.controller.js";
+// import { Router } from "express";
+// import roleController from "../controllers/role.controller.js";
 
-export const roleRoutes = Router()
+// export const roleRoutes = Router()
 
-roleRoutes
-    .get('/:userId',roleController.getRolesByUserId)
+// roleRoutes
+//     .get('/:userId',roleController.getRolesByUserId)
