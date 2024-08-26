@@ -1,4 +1,6 @@
-export class DataManipulation {
+import { FEILD, LIMIT, PAGE, SORT } from "../constants/product.constants.js";
+
+export class ApiFeature {
 
   constructor(query, queryString) {
     this.query = query;
@@ -23,7 +25,7 @@ export class DataManipulation {
       const sortBy = this.queryString.sort.split(',').join(' ');
       this.query = this.query.sort(sortBy);
     } else {
-      this.query = this.query.sort('-createdAt');
+      this.query = this.query.sort(SORT);
     }
 
     return this;
@@ -34,15 +36,15 @@ export class DataManipulation {
       const fields = this.queryString.fields.split(',').join(' ');
       this.query = this.query.select(fields);
     } else {
-      this.query = this.query.select('-__v');
+      this.query = this.query.select(FEILD);
     }
 
     return this;
   }
 
   paginate() {
-    const page = this.queryString.page * 1 || 1;
-    const limit = this.queryString.limit * 1 || 100;
+    const page = this.queryString.page * 1 || PAGE;
+    const limit = this.queryString.limit * 1 || LIMIT;
     const skip = (page - 1) * limit;
 
     this.query = this.query.skip(skip).limit(limit);
@@ -56,5 +58,3 @@ export class DataManipulation {
     return count;
   }
 }
-
-export default new DataManipulation

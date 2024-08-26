@@ -11,6 +11,7 @@ export const ProductSchema = new Schema({
     },
     count : {
         type : Number,
+        min: [0, 'Count must be a non-negative number'],
         required : true
     },
     category_id : {

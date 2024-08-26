@@ -28,4 +28,4 @@ class UserDto{
     }
 }
 
-export default new AuthDto
+export default new UserDto
