@@ -8,16 +8,13 @@ import { appConfig } from './config/app.config.js';
 import { connectDb } from './mongo/db.js';
 import { ExceptionHandlerMiddleware } from './middlewares/error-handler.middleware.js';
 import { NotFoundException } from './exceptions/not-found.exception.js';
-import { verifyJwtToken } from './middlewares/jwt.middleware.js';
-
 
 const app = express()
 
 //MIDDLEWARES
+app.use(morgan('tiny'))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(morgan('tiny'))
-app.use("/public", express.static(path.join(process.cwd(), "public")));
 app.use(cors({
     "origin": "*",
     "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",

@@ -1,12 +1,13 @@
-import { Category } from "../models/category.js";
-import { Product } from "../models/product.js";
-import { NotFoundException } from "../exceptions/not-found.exception.js";
+import { NotFoundException } from "../../exceptions/not-found.exception.js"
+import { Product } from "../product/product.model.js"
+import { Category } from "./category.model.js"
+
 
 class CategoryController {
     constructor() { }
 
     //This method create new Category and returuns created category
-    async createCategory(req, res, next) {
+    async create(req, res, next) {
 
         try {
             const category = new Category(req.body)
@@ -21,7 +22,7 @@ class CategoryController {
     }
 
     //This method returns all categories with products
-    async getAllCategories(_, res, next) {
+    async getAll(_, res, next) {
 
         try {
             const categories = await Category.find().populate('products')
@@ -36,12 +37,14 @@ class CategoryController {
     }
 
     //This method return one category with products by id
-    async getCategoryById(req, res, next) {
+    async getById(req, res, next) {
 
         try {
-            const category = await Category.findById(req.params.categoryId)
+            const category = await Category.findById(req.params.id)
 
-            if (!category) throw new NotFoundException(404, 'Category not found')
+            if (!category) throw new NotFoundException('Category not found')
+
+            res.sendFile()
 
             res.status(200).send({
                 message: 'Ok',
@@ -52,11 +55,11 @@ class CategoryController {
     }
 
     //This method update category by id and returns updated category
-    async updatedCategoryById(req, res, next) {
+    async updatedById(req, res, next) {
 
         try {
             const updatedCategory = await Category.findByIdAndUpdate(
-                req.params.categoryId,
+                req.params.id,
                 req.body,
                 {
                     overwriteDiscriminatorKey: true,
@@ -65,7 +68,7 @@ class CategoryController {
                 })
                 .populate('products')
 
-            if (!updatedCategory) throw new NotFoundException(404, 'Category not found')
+            if (!updatedCategory) throw new NotFoundException('Category not found')
 
             res.status(200).send({
                 message: 'Ok',
@@ -76,10 +79,10 @@ class CategoryController {
     }
 
     //This method delete category by Id and returns deleted category
-    async deletedCategoryById(req, res, next) {
+    async deleteById(req, res, next) {
 
         try {
-            const deletedCategory = await Category.findByIdAndDelete(req.params.categoryId)
+            const deletedCategory = await Category.findByIdAndDelete(req.params.id)
 
             await Product.deleteMany({ category_id: deletedCategory._id })
 

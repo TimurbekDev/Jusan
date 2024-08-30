@@ -1,11 +1,11 @@
 import { isValidObjectId } from "mongoose";
-import { FEILD, LIMIT, PAGE, SORT } from "../constants/product.constants.js";
-import { BadRequestException } from "../exceptions/bad-request.exception.js";
-import { NotFoundException } from "../exceptions/not-found.exception.js";
-import { Product } from "../models/product.js";
-import { SelledProduct } from "../models/selled_products.js";
-import { User } from "../models/user.js";
-import { ApiFeature } from "../utils/ApiFeature.js";
+import { FEILD, LIMIT, PAGE, SORT } from "../../constants/product.constants.js";
+import { BadRequestException } from "../../exceptions/bad-request.exception.js";
+import { ApiFeature } from "../../utils/ApiFeature.js";
+import { Product } from "../product/product.model.js";
+import { User } from "../user/user.model.js";
+import { SelledProduct } from "./selled-product.model.js";
+import { NotFoundException } from "../../exceptions/not-found.exception.js";
 
 class SelledProductController {
 
@@ -17,7 +17,7 @@ class SelledProductController {
         this.#_selledProductModel = SelledProduct;
         this.#_productModel = Product;
         this.#_userModel = User;
-        this.#_apiFeature = ApiFeature
+        this.#_apiFeature = ApiFeature;
     }
 
     create = async (req, res, next) => {
@@ -64,7 +64,7 @@ class SelledProductController {
 
             res.send({
                 page: req.query?.page || PAGE,
-                limit: req.query?.limit || LIMIT,
+                limit: parseInt(req.query?.limit) || LIMIT,
                 sort: req.query?.sort || SORT,
                 feilds: req.query?.feilds || FEILD,
                 total: await feature.count(),
@@ -138,12 +138,25 @@ class SelledProductController {
         }
     }
 
-    deleteById = async (req,res,next) => {
+    deleteById = async (req, res, next) => {
         try {
-            
+
             const selled_product_id = req.params.id
 
-            
+            if (!isValidObjectId(selled_product_id))
+                throw new BadRequestException('Id is not valid ObjectId')
+
+            const result = await this.#_selledProductModel.findByIdAndDelete(selled_product_id)
+
+            if (!result)
+                throw new NotFoundException('SelledProduct not found')
+
+            res.status(200).send({
+
+                
+                message: 'Ok',
+                data: [result]
+            })
         } catch (error) {
             next(error)
         }

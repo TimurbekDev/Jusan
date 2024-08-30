@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { saveRoles } from "../models/role.js";
 import { dbConfig } from "../config/db.config.js";
+import { saveRoles } from "../modules/role/role.model.js";
 
 export const connectDb = () => {
 

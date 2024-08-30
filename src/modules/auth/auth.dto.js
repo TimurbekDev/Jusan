@@ -11,8 +11,8 @@ class AuthDto{
 
         return this.#_joiValidator.object({
 
-            email : Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
-            password : Joi.string().min(6).max(12).required()
+            email : Joi.string().email().required(),
+            password : Joi.string().required()
         })
     }
 }

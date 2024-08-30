@@ -1,13 +1,13 @@
-import { model, Schema, SchemaTypes } from "mongoose";
+import { model, Schema } from "mongoose";
 
 const SelledProductsSchema = new Schema({
     product_id : {
-        type : SchemaTypes.ObjectId,
+        type : Schema.Types.ObjectId,
         ref : 'Product',
         required : true
     },
     user_id : {
-        type : SchemaTypes.ObjectId,
+        type : Schema.Types.ObjectId,
         ref : 'User',
         required : true
     },

@@ -1,7 +1,5 @@
 import bcrypt from 'bcrypt'
-import { BadRequestException } from "../exceptions/bad-request.exception.js"
-import { User } from "../models/user.js"
-
+import { User } from './user.model.js'
 class UserController {
     constructor() { }
 
