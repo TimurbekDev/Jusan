@@ -10,24 +10,19 @@ export const Role = mongoose.model('Role', RoleSchema)
 
 export const saveRoles = async () => {
 
-    try {
-        const roles = await Role.find()
+    const roles = await Role.find()
 
-        if (roles.length < 1) {
-            await Role.create([
-                {
-                    name: "staff"
-                },
-                {
-                    name: "seller"
-                },
-                {
-                    name: "admin"
-                }
-            ])
-        }
-    }
-    catch (error) {
-        console.log(error.message);
+    if (roles.length < 1) {
+        await Role.create([
+            {
+                name: "staff"
+            },
+            {
+                name: "seller"
+            },
+            {
+                name: "admin"
+            }
+        ])
     }
 }

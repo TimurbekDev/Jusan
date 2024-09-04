@@ -18,6 +18,8 @@ export const checkAuthGuard = (isProtected) => {
         }
 
         const accessToken = token.split(' ')[1]
+        console.log(accessToken);
+        
 
         verifyToken(accessToken)
 
@@ -25,6 +27,8 @@ export const checkAuthGuard = (isProtected) => {
 
         req.userId = user_id
         req.role = role
+        console.log('aaaa');
+        
 
         next()
     }

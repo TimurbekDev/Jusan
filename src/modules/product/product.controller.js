@@ -31,7 +31,7 @@ class ProductController {
             await product.save()
 
             res.status(200).send({
-                message: 'Ok',
+                message: 'Ok',                 
                 data: [product]
             })
         }

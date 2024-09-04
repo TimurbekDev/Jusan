@@ -6,20 +6,20 @@ import { CheckRolesGuard } from "../../guards/check-role.guard.js";
 export const categoryRoutes = Router()
 
 categoryRoutes
+    .post('/',
+        checkAuthGuard(true),
+        CheckRolesGuard('seller'),
+        categoryController.create)
     .get('/',
         checkAuthGuard(false),
         categoryController.getAll)
     .get('/:id',
         checkAuthGuard(false),
         categoryController.getById)
-    .post('/',
-        checkAuthGuard(true),
-        CheckRolesGuard('seller'),
-        categoryController.create)
     .put('/:id',
         checkAuthGuard(true),
         CheckRolesGuard('seller'),
-        categoryController.updatedById)
+        categoryController.updateById)
     .delete('/:id',
         checkAuthGuard(true),
         CheckRolesGuard('seller'),

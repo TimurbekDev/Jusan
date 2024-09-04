@@ -2,26 +2,27 @@ import jwt from "jsonwebtoken";
 import { jwtConfig } from "../config/jwt.config.js";
 import { BadRequestException } from "../exceptions/bad-request.exception.js";
 
-export const generateJwtToken = (id, role_name) => {
+export const generateJwtToken = async (payload) => {
 
-
-    return jwt.sign(
-        {
-            user_id: id,
-            role : role_name
-        },
-        jwtConfig.secretKey,
-        { expiresIn: jwtConfig.expirdeTime })
+    return await Promise.all([
+        jwt.sign(payload,
+            jwtConfig.accessSecretKey,
+            { expiresIn: jwtConfig.accessExpiredTime }),
+        jwt.sign(payload,
+            jwtConfig.refreshSecretKey,
+            { expiresIn: jwtConfig.refreshExpiredTime })
+    ])
 }
 
 export const verifyToken = (token) => {
 
-    jwt.verify(token, jwtConfig.secretKey, (err, _) => {
-        
+    console.log(token);
+    jwt.verify(token, jwtConfig.accessSecretKey, (err, _) => {
+
         if (err && err instanceof jwt.NotBeforeError) {
             throw new BadRequestException("Not before JWT error");
         }
-        
+
         if (err && err instanceof jwt.TokenExpiredError) {
             throw new jwt.TokenExpiredError("Token already expired");
         }

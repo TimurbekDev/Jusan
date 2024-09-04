@@ -8,8 +8,8 @@ import { userRoutes } from "../modules/user/user.routes.js";
 export const mainRouter = Router()
 
 mainRouter
-    .use('/auth',authRoutes)
-    .use('/categories',categoryRoutes)
-    .use('/products',productRoutes)
-    .use('/selled-products',selledProductRoutes)
-    .use('/users',userRoutes)
+    .use('/auth', authRoutes)
+    .use('/categories', categoryRoutes)
+    .use('/products', productRoutes)
+    .use('/selled-products', selledProductRoutes)
+    .use('/users', userRoutes)
