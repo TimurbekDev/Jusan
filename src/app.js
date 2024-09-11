@@ -1,4 +1,4 @@
-import path from 'path';
+
 import express from 'express'
 import bodyParser from 'body-parser';
 import cors from 'cors'
@@ -16,7 +16,7 @@ app.use(morgan('tiny'))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors({
-    origin: 'http://localhost:8080',
+    origin: '*',
     optionsSuccessStatus : 200
 }));
 

@@ -16,7 +16,6 @@ export const generateJwtToken = async (payload) => {
 
 export const verifyToken = (token) => {
 
-    console.log(token);
     jwt.verify(token, jwtConfig.accessSecretKey, (err, _) => {
 
         if (err && err instanceof jwt.NotBeforeError) {
@@ -31,3 +30,20 @@ export const verifyToken = (token) => {
         }
     });
 }
+
+// export const verifyRefreshToken = (token) =>{
+
+//     jwt.verify(token,jwtConfig.refreshSecretKey,(err,_)=>{
+
+//         if (err && err instanceof jwt.NotBeforeError) {
+//             throw new BadRequestException("Not before JWT error");
+//         }
+
+//         if (err && err instanceof jwt.TokenExpiredError) {
+//             throw new jwt.TokenExpiredError("Token already expired");
+//         }
+//         if (err && err instanceof jwt.JsonWebTokenError) {
+//             throw new BadRequestException("Invalid JWT token");
+//         }
+//     })
+// }

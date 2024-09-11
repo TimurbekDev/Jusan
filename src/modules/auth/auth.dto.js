@@ -15,6 +15,23 @@ class AuthDto{
             password : Joi.string().required()
         })
     }
+
+    forgotPassword(){
+
+        return this.#_joiValidator.object({
+            email : Joi.string().email().required()
+        })
+    }
+
+    resetPassword(){
+
+        return this.#_joiValidator.object({
+
+            email : Joi.string().email().required(),
+            password : Joi.string().required(),
+            code : Joi.number().required()
+        })
+    }
 }
 
 export default new AuthDto

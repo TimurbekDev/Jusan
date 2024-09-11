@@ -7,7 +7,7 @@ class ProductDto{
         this.#_joiValidator = Joi
     }
 
-    create(){
+    create = ()=>{
 
         return this.#_joiValidator.object({
 
@@ -18,7 +18,7 @@ class ProductDto{
         })
     }
 
-    update(){
+    update = ()=>{
 
         return this.#_joiValidator.object({
 

@@ -1,6 +1,8 @@
-import { FEILD, LIMIT, PAGE, SORT } from "../../constants/product.constants.js";
+import path from 'path';
+import fs from 'fs'
+import { FEILD, LIMIT, PAGE, SORT } from "../../constants/api-feature.constants.js";
 import { NotFoundException } from "../../exceptions/not-found.exception.js"
-import { ApiFeature } from "../../utils/ApiFeature.js";
+import { ApiFeature } from "../../utils/api-feature.utils.js";
 import { Category } from "../category/category.model.js";
 import { Product } from "./product.model.js"
 
@@ -18,7 +20,15 @@ class ProductController {
     create = async (req, res, next) => {
 
         try {
-            const product = new this.#_productModel(req.body)
+            const { name, price, count, category_id } = req.body
+            const product = new this.#_productModel({
+                name,
+                price,
+                count,
+                category_id,
+                image_url: req.file.filename
+            })
+
 
             const updatedCategory = await this.#_categoryModel.findByIdAndUpdate(product.category_id, {
                 $push: {
@@ -31,7 +41,7 @@ class ProductController {
             await product.save()
 
             res.status(200).send({
-                message: 'Ok',                 
+                message: 'Ok',
                 data: [product]
             })
         }
@@ -44,7 +54,6 @@ class ProductController {
                 .filter()
                 .sort()
                 .limitFields()
-                .paginate()
 
             res.send({
                 page: req.query?.page || PAGE,
@@ -102,6 +111,8 @@ class ProductController {
             const deleteProduct = await this.#_productModel.findByIdAndDelete(req.params.id)
 
             if (!deleteProduct) throw new NotFoundException("Product not found")
+
+            fs.unlinkSync(path.join(process.cwd(), 'src', 'uploads', deleteProduct.image_url))
 
             res.status(200).send({
                 message: 'Ok',

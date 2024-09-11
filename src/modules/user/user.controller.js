@@ -70,6 +70,18 @@ class UserController {
         }
     }
 
+    getById = async (req,res,next) => {
+        try {
+            const user = await this.#_userModel.findById(req.id)
+
+            res.status(200).send({
+                data : user
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+
 
     updateById = async (req, res, next) => {
 

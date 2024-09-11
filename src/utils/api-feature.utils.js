@@ -1,4 +1,4 @@
-import { FEILD, LIMIT, PAGE, SORT } from "../constants/product.constants.js";
+import { FEILD, LIMIT, PAGE, SORT } from "../constants/api-feature.constants.js";
 
 export class ApiFeature {
 

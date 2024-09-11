@@ -11,12 +11,17 @@ userRoutes
     .post('/',
         ValidationMiddleware(userDto.create()),
         checkAuthGuard(true),
-        CheckRolesGuard('admin','seller'),
+        CheckRolesGuard('admin','seller','staff'),
         userController.create)
     .get('/',
         checkAuthGuard(true),
         CheckRolesGuard('admin','seller'),
         userController.getAll)
+    .get('/:id',
+        checkAuthGuard(true),
+        CheckRolesGuard('admin','seller','staff'),
+        userController.getById
+    )
     .put('/:id',
         checkAuthGuard(true),
         CheckRolesGuard('admin','seller'),

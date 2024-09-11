@@ -1,10 +1,10 @@
 import { isValidObjectId } from "mongoose";
 import { BadRequestException } from "../../exceptions/bad-request.exception.js";
 import { NotFoundException } from "../../exceptions/not-found.exception.js"
-import { ApiFeature } from "../../utils/ApiFeature.js";
+import { ApiFeature } from "../../utils/api-feature.utils.js";
 import { Product } from "../product/product.model.js"
 import { Category } from "./category.model.js"
-import { FEILD, LIMIT, PAGE, SORT } from "../../constants/product.constants.js";
+import { FEILD, LIMIT, PAGE, SORT } from "../../constants/api-feature.constants.js";
 
 
 class CategoryController {

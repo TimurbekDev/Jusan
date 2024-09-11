@@ -1,7 +1,7 @@
 import { isValidObjectId } from "mongoose";
-import { FEILD, LIMIT, PAGE, SORT } from "../../constants/product.constants.js";
+import { FEILD, LIMIT, PAGE, SORT } from "../../constants/api-feature.constants.js";
 import { BadRequestException } from "../../exceptions/bad-request.exception.js";
-import { ApiFeature } from "../../utils/ApiFeature.js";
+import { ApiFeature } from "../../utils/api-feature.utils.js";
 import { Product } from "../product/product.model.js";
 import { User } from "../user/user.model.js";
 import { SelledProduct } from "./selled-product.model.js";
