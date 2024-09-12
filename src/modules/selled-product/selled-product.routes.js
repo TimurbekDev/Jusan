@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { ValidationMiddleware } from "../../middlewares/validation.middleware.js";
-import selledProductDto from "./selled-product.dto.js";
-import selledProductController from "./selled-product.controller.js";
 import { checkAuthGuard } from "../../guards/check-auth.guard.js";
 import { CheckRolesGuard } from "../../guards/check-role.guard.js";
+import selledProductDto from "./selled-product.dto.js";
+import selledProductController from "./selled-product.controller.js";
 
 export const selledProductRoutes = Router()
 

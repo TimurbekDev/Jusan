@@ -1,4 +1,5 @@
 
+import path from 'path'
 import express from 'express'
 import bodyParser from 'body-parser';
 import cors from 'cors'
@@ -12,13 +13,18 @@ import { NotFoundException } from './exceptions/not-found.exception.js';
 const app = express()
 
 //MIDDLEWARES
-app.use(morgan('tiny'))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use('/uploads', express.static(path.join(process.cwd(), 'src', 'uploads')));
 app.use(cors({
     origin: '*',
-    optionsSuccessStatus : 200
+    optionsSuccessStatus: 200
 }));
+
+//
+if (process.env.NODE_ENV == "development") {
+    app.use(morgan("tiny"));
+}
 
 //CONNECT TO DB
 connectDb()

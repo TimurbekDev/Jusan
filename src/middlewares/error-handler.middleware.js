@@ -12,7 +12,7 @@ export const  ExceptionHandlerMiddleware = (error,_,res,__) => {
 
     if(error instanceof MulterError){
         return res.status(411).send({
-            name : 'Multer',
+            name : 'Multer Error',
             message : error.message
         })
     }

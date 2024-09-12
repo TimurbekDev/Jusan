@@ -21,12 +21,13 @@ class ProductController {
 
         try {
             const { name, price, count, category_id } = req.body
+            const imageUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
             const product = new this.#_productModel({
                 name,
                 price,
                 count,
                 category_id,
-                image_url: req.file.filename
+                image_url: imageUrl
             })
 
 

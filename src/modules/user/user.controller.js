@@ -3,16 +3,31 @@ import { User } from './user.model.js'
 import { isValidObjectId } from 'mongoose';
 import { NotFoundException } from '../../exceptions/not-found.exception.js';
 import { BadRequestException } from '../../exceptions/bad-request.exception.js';
+import { Role } from '../role/role.model.js';
+import { ConflictException } from '../../exceptions/conflict.exception.js';
 class UserController {
 
     #_userModel;
+    #_roleModel;
     constructor() {
         this.#_userModel = User;
+        this.#_roleModel = Role;
     }
 
     create = async (req, res, next) => {
         try {
             const { email, full_name, password, role_id } = req.body
+            const role = await this.#_roleModel.findById(role_id).select('name')            
+
+            if((req.role == 'staff'))
+                throw new ConflictException('You have not access to this endpoint')
+
+            if((req.role == 'seller' && role.name == 'admin'))
+                throw new ConflictException('You have not access to this endpoint')
+
+            const exsistUser = await  this.#_userModel.findOne({ email })
+            if(exsistUser)
+                throw new ConflictException('Email is already in use')
 
             const hashPassword = await bcrypt.hash(password, 12)
 

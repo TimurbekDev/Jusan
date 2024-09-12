@@ -1,7 +1,7 @@
 import { Router } from "express";
-import categoryController from "./category.controller.js";
 import { checkAuthGuard } from "../../guards/check-auth.guard.js";
 import { CheckRolesGuard } from "../../guards/check-role.guard.js";
+import categoryController from "./category.controller.js";
 
 export const categoryRoutes = Router()
 

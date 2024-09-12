@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken';
 import { User } from '../user/user.model.js'
 import { BadRequestException } from '../../exceptions/bad-request.exception.js'
 import { generateJwtToken } from '../../helpers/jwt.helper.js'
@@ -6,7 +7,6 @@ import { NotFoundException } from '../../exceptions/not-found.exception.js';
 import { sendEmail } from '../../utils/send_email.utils.js';
 import { generateOTP } from '../../utils/otp-generator.utils.js';
 import { getItem, setItem } from '../../utils/cache.utils.js';
-import jwt from 'jsonwebtoken';
 import { jwtConfig } from '../../config/jwt.config.js';
 
 class AuthController {
@@ -16,6 +16,7 @@ class AuthController {
         this.#_userModel = User;
     }
 
+    //Login method
     login = async (req, res, next) => {
 
         try {
@@ -49,6 +50,7 @@ class AuthController {
         }
     }
 
+    //this method  is used to generate OTP and send it to user email
     forgotPassword = async (req, res, next) => {
         try {
 
@@ -79,6 +81,7 @@ class AuthController {
         }
     }
 
+    //this method  is used to verify OTP and reset password
     resetPassword = async (req, res, next) => {
         try {
 
@@ -106,6 +109,7 @@ class AuthController {
         }
     }
 
+    //This method is used to refresh access token
     refreshAccessToken = async (req, res, next) => {
         try {
 

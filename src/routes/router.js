@@ -4,11 +4,13 @@ import { categoryRoutes } from "../modules/category/category.routes.js";
 import { productRoutes } from "../modules/product/product.routes.js";
 import { selledProductRoutes } from "../modules/selled-product/selled-product.routes.js";
 import { userRoutes } from "../modules/user/user.routes.js";
+import { roleRoutes } from "../modules/role/role.routes.js";
 
 export const mainRouter = Router()
 
 mainRouter
     .use('/auth', authRoutes)
+    .use('/roles',roleRoutes)
     .use('/categories', categoryRoutes)
     .use('/products', productRoutes)
     .use('/selled-products', selledProductRoutes)
