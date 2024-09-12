@@ -7,6 +7,6 @@ export const roleRoutes = Router()
 
 roleRoutes
     .get('/',
-        checkAuthGuard(false),
+        checkAuthGuard(true),
         CheckRolesGuard('seller','admin'),
         roleController.getRolesByUserId)
