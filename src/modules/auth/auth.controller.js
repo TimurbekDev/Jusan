@@ -73,7 +73,7 @@ class AuthController {
 
             res.status(200).send({
                 message: `Confirmation code sended to ${email}`,
-                code: otp
+                code: Number(otp)
             })
         }
         catch (error) {

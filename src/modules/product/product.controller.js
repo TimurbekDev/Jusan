@@ -51,13 +51,14 @@ class ProductController {
     getAll = async (req, res, next) => {
         try {
             const feature = new this.#_apiFeature(this.#_productModel.find(), req.query)
+                .paginate()
                 .filter()
                 .sort()
                 .limitFields()
 
             res.send({
-                page: req.query?.page || PAGE,
-                limit: req.query?.limit || LIMIT,
+                page: Number(req.query?.page) || PAGE,
+                limit: Number(req.query?.limit) || LIMIT,
                 sort: req.query?.sort || SORT,
                 feilds: req.query?.feilds || FEILD,
                 total: await feature.count(),
