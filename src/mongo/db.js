@@ -15,11 +15,13 @@ export const connectDb = () => {
 
     const dbConnection = mongoose.connection;
 
-    dbConnection.once('open', (_) => {
-        console.log('Database connected : ', dbConfig.url);
-    })
+    if (process.env.NODE_ENV == "development") {
+        dbConnection.once('open', (_) => {
+            console.log('Database connected : ', dbConfig.url);
+        })
 
-    dbConnection.on('error', (error) => {
-        console.log('Database connection error : ', error.message);
-    })
+        dbConnection.on('error', (error) => {
+            console.log('Database connection error : ', error.message);
+        })
+    }
 }

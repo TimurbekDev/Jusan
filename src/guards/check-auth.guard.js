@@ -20,6 +20,7 @@ export const checkAuthGuard = (isProtected) => {
         const accessToken = token.split(' ')[1]
 
         verifyToken(accessToken)
+        
 
         const {user_id , role} = jwt.decode(accessToken)
 

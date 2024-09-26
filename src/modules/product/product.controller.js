@@ -29,8 +29,7 @@ class ProductController {
                 category_id,
                 image_url: imageUrl
             })
-
-
+            
             const updatedCategory = await this.#_categoryModel.findByIdAndUpdate(product.category_id, {
                 $push: {
                     products: product
@@ -42,7 +41,7 @@ class ProductController {
             await product.save()
 
             res.status(200).send({
-                message: 'Ok',
+                message: 'Product Created',
                 data: [product]
             })
         }
@@ -99,7 +98,7 @@ class ProductController {
             if (!updatedProduct) throw new NotFoundException("Product not found")
 
             res.status(200).send({
-                message: 'Ok',
+                message: 'Product Updated',
                 data: [updatedProduct]
             })
         }
@@ -111,12 +110,14 @@ class ProductController {
         try {
             const deleteProduct = await this.#_productModel.findByIdAndDelete(req.params.id)
 
-            if (!deleteProduct) throw new NotFoundException("Product not found")
+            if (!deleteProduct)
+                throw new NotFoundException("Product not found")
 
-            fs.unlinkSync(path.join(process.cwd(), 'src', 'uploads', deleteProduct.image_url))
+            if(deleteProduct?.image_url)
+                fs.unlinkSync(path.join(process.cwd(), 'src', 'uploads', deleteProduct.image_url))
 
             res.status(200).send({
-                message: 'Ok',
+                message: 'Product Deleted',
                 data: [deleteProduct]
             })
         }

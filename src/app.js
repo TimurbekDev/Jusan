@@ -21,7 +21,7 @@ app.use(cors({
     optionsSuccessStatus: 200
 }));
 
-//
+//Morgan MIDDLEWARE
 if (process.env.NODE_ENV == "development") {
     app.use(morgan("tiny"));
 }
@@ -33,7 +33,8 @@ connectDb()
 app.use('/api/v1', mainRouter)
 
 //CATCH ALL UNAVAILABLE REQUESTS
-app.all("*", (_, __, next) => next(new NotFoundException('Given endpoint not found')))
+app.all("*", (_, __, next) => 
+    next(new NotFoundException('Given endpoint not found')))
 
 //CUSTOM MIDDLEWARE TO HANDLE EXCEPTIONS
 app.use(ExceptionHandlerMiddleware)

@@ -27,7 +27,7 @@ class CategoryController {
             await category.save()
 
             res.status(201).send({
-                message: 'Ok',
+                message: 'Category created',
                 data: [category]
             })
         }
@@ -109,7 +109,7 @@ class CategoryController {
                 throw new NotFoundException('Category not found')
 
             res.status(200).send({
-                message: 'Ok',
+                message: 'Product updated',
                 data: [updatedCategory]
             })
         }
@@ -134,7 +134,7 @@ class CategoryController {
                 throw new NotFoundException('Category not found')
 
             res.status(200).send({
-                message: 'Ok',
+                message: 'Product deleted',
                 data: deletedCategory
             })
         }

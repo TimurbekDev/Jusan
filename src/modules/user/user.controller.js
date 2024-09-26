@@ -40,7 +40,7 @@ class UserController {
             await user.save()
 
             res.status(201).send({
-                message: 'Ok',
+                message: 'User created',
                 data: [user]
             })
         }
@@ -116,7 +116,7 @@ class UserController {
                 throw new NotFoundException('User not found')
 
             res.status(200).send({
-                message: 'Ok',
+                message: 'User updated',
                 data: [updatedUser]
             })
         }
@@ -138,7 +138,7 @@ class UserController {
                 throw new NotFoundException('User not found')
 
             res.status(200).send({
-                message: 'Ok',
+                message: 'User deleted',
                 data: [deletedUser]
             })
         }

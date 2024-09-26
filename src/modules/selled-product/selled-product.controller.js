@@ -45,7 +45,7 @@ class SelledProductController {
             await selledProduct.save()
 
             res.status(201).send({
-                message: 'Ok',
+                message: 'Selled Product created',
                 data: [selledProduct]
             })
         } catch (error) {
@@ -130,7 +130,7 @@ class SelledProductController {
             }, { new: true })
 
             res.status(200).send({
-                message: 'Ok',
+                message: 'Selled Product updated',
                 data: [result]
             })
         } catch (error) {
@@ -154,7 +154,7 @@ class SelledProductController {
             res.status(200).send({
 
                 
-                message: 'Ok',
+                message: 'Selled Product deleted',
                 data: [result]
             })
         } catch (error) {

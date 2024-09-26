@@ -11,7 +11,7 @@ userRoutes
     .post('/',
         ValidationMiddleware(userDto.create()),
         checkAuthGuard(true),
-        CheckRolesGuard('admin','seller','staff'),
+        CheckRolesGuard('admin','seller'),
         userController.create)
     .get('/',
         checkAuthGuard(true),
@@ -19,10 +19,11 @@ userRoutes
         userController.getAll)
     .get('/:id',
         checkAuthGuard(true),
-        CheckRolesGuard('admin','seller','staff'),
+        CheckRolesGuard('admin','seller'),
         userController.getById
     )
     .put('/:id',
+        ValidationMiddleware(userDto.update()),
         checkAuthGuard(true),
         CheckRolesGuard('admin','seller'),
         userController.updateById)
